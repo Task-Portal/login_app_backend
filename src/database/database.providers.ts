@@ -14,9 +14,9 @@ export const databaseProviders = [
         database: cs.get<string>('DB_NAME'),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         synchronize: true,
-        // ssl: {
-        //   rejectUnauthorized: false,
-        // },
+        ssl: {
+          rejectUnauthorized: false,
+        },
       });
       return dataSource.initialize();
     },
