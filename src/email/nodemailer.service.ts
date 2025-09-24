@@ -22,7 +22,7 @@ export class NodemailerMailService implements IEmailService {
   }
 
   async sendPasswordReset(email: string, token: string) {
-    const resetLink = `${this.cs.get<string>('REACT_FRONTED_URL')}reset-password?token=${token}`;
+    const resetLink = `${this.cs.get<string>('REACT_FRONTED_URL')}/reset-password?token=${token}`;
 
     try {
       await this.transporter.sendMail({

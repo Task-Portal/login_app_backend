@@ -18,7 +18,7 @@ export class MailgunMailService implements IEmailService {
       key: this.cs.get<string>('MAILGUN_API_KEY')!,
     });
 
-    const resetLink = `${this.cs.get<string>('REACT_FRONTED_URL')}reset-password?token=${token}`;
+    const resetLink = `${this.cs.get<string>('REACT_FRONTED_URL')}/reset-password?token=${token}`;
     const domain = this.cs.get<string>('MAILGUN_DOMAIN')!;
 
     const messageData = {
