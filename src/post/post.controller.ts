@@ -60,4 +60,14 @@ export class PostController {
   remove(@Param('id') id: string) {
     return this.postService.remove(+id);
   }
+
+  @Get('/debug/memory')
+  findAllMemUsage() {
+    const used = process.memoryUsage();
+    return {
+      rss: Math.round(used.rss / 1024 / 1024) + ' MB',
+      heapUsed: Math.round(used.heapUsed / 1024 / 1024) + ' MB',
+      heapTotal: Math.round(used.heapTotal / 1024 / 1024) + ' MB',
+    };
+  }
 }
