@@ -12,7 +12,7 @@ async function bootstrap() {
   });
   app.useStaticAssets(join(__dirname, '..', FILE_UPLOADS_DIR));
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(appConfig.port);
+  await app.listen(appConfig.port || 3000);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
