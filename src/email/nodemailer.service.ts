@@ -3,9 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 import { SentMessageInfo } from 'nodemailer/lib/smtp-transport';
+import { IEmailService } from './email.interface';
 
 @Injectable()
-export class MailService {
+export class NodemailerMailService implements IEmailService {
   private transporter: Transporter<SentMessageInfo>;
 
   constructor(private readonly cs: ConfigService) {
@@ -23,16 +24,23 @@ export class MailService {
   async sendPasswordReset(email: string, token: string) {
     const resetLink = `${this.cs.get<string>('REACT_FRONTED_URL')}/reset-password?token=${token}`;
 
-    await this.transporter.sendMail({
-      from: `"Support" <${this.cs.get<string>('MAIL_USER')}>`,
-      to: email,
-      subject: 'Password Reset Request',
-      html: `
+    try {
+      await this.transporter.sendMail({
+        from: `"Support" <${this.cs.get<string>('MAIL_USER')}>`,
+        to: email,
+        subject: 'Password Reset Request',
+        html: `
         <h3>Password Reset</h3>
         <p>You requested to reset your password. Click the link below:</p>
         <a href="${resetLink}">${resetLink}</a>
         <p>This link will expire in 1 hour.</p>
       `,
-    });
+      });
+      console.log('Password reset email sent via Nodemailer.');
+    } catch (error) {
+      console.error('Error sending email with Nodemailer:', error);
+      // We throw the error so our failover service knows something went wrong.
+      throw error;
+    }
   }
 }

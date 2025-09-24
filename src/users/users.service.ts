@@ -14,15 +14,19 @@ import bcrypt from 'bcryptjs';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ConfigService } from '@nestjs/config';
 import * as crypto from 'crypto';
-import { MailService } from 'src/mail.service';
+
+import type { IEmailService } from 'src/email/email.interface';
+import { EMAIL_SERVICE } from 'src/email/email.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject(USER_REPOSITORY)
     private userRepo: Repository<User>,
+
     private readonly configService: ConfigService,
-    private mailService: MailService,
+    @Inject(EMAIL_SERVICE)
+    private mailService: IEmailService,
   ) {}
 
   async create(newUser: CreateUserDto): Promise<User> {
